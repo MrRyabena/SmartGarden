@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# 3D model
+*.bak
+*.3mf
+*.stl
+*.*~
