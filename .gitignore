@@ -36,3 +36,7 @@
 *.3mf
 *.stl
 *.*~
+
+# PlatformIO
+.pio/
+.vscode/
