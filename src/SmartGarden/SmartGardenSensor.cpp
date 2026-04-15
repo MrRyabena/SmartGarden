@@ -39,7 +39,13 @@ void shs::SmartGardenSensor::setLightSensorEnablePins(const shs::t::shs_pin_t en
 void shs::SmartGardenSensor::setup()
 {
     if (m_soil_sensor) m_soil_sensor->setup();
+    if (m_soil_sensor_en_high) gio::init(m_soil_sensor_en_high);
+    if (m_soil_sensor_en_low)  gio::init(m_soil_sensor_en_low);
+
     if (m_light_sensor) m_light_sensor->setup();
+    if (m_light_sensor_en_high) gio::init(m_light_sensor_en_high);
+    if (m_light_sensor_en_low)  gio::init(m_light_sensor_en_low);
+
     if (m_dht) m_dht->setup();
 }
 
@@ -289,13 +295,21 @@ void shs::SmartGardenSensor::m_enableSoilSensor(const bool enable)
     if (!m_soil_sensor) return;
     if (enable)
     {
-        if (m_soil_sensor_en_high >= 0) gio::high(m_soil_sensor_en_high);
-        if (m_soil_sensor_en_low >= 0) gio::low(m_soil_sensor_en_low);
+        if (m_soil_sensor_en_high >= 0)
+        {
+            gio::mode(m_soil_sensor_en_high, OUTPUT);
+            gio::high(m_soil_sensor_en_high);
+        }
+        if (m_soil_sensor_en_low >= 0)
+        {
+            gio::mode(m_soil_sensor_en_low, OUTPUT);
+            gio::low(m_soil_sensor_en_low);
+        }
         return;
     }
 
-    if (m_soil_sensor_en_high >= 0) gio::high(m_soil_sensor_en_high);
-    if (m_soil_sensor_en_low >= 0) gio::low(m_soil_sensor_en_low);
+    if (m_soil_sensor_en_high >= 0) gio::mode(m_soil_sensor_en_high, INPUT);
+    if (m_soil_sensor_en_low >= 0) gio::mode(m_soil_sensor_en_low, INPUT);
 }
 
 void shs::SmartGardenSensor::m_enableLightSensor(const bool enable)
@@ -303,11 +317,19 @@ void shs::SmartGardenSensor::m_enableLightSensor(const bool enable)
     if (!m_light_sensor) return;
     if (enable)
     {
-        if (m_light_sensor_en_high >= 0) gio::high(m_light_sensor_en_high);
-        if (m_light_sensor_en_low >= 0) gio::low(m_light_sensor_en_low);
+        if (m_light_sensor_en_high >= 0)
+        {
+            gio::mode(m_light_sensor_en_high, OUTPUT);
+            gio::high(m_light_sensor_en_high);
+        }
+        if (m_light_sensor_en_low >= 0)
+        {
+            gio::mode(m_light_sensor_en_low, OUTPUT);
+            gio::low(m_light_sensor_en_low);
+        }
         return;
     }
 
-    if (m_light_sensor_en_high >= 0) gio::high(m_light_sensor_en_high);
-    if (m_light_sensor_en_low >= 0) gio::low(m_light_sensor_en_low);
+    if (m_light_sensor_en_high >= 0) gio::mode(m_light_sensor_en_high, INPUT);
+    if (m_light_sensor_en_low >= 0) gio::mode(m_light_sensor_en_low, INPUT);
 }
