@@ -3,9 +3,14 @@
 
 #include <memory>
 
+#include <EncButton.h>
+
 #include <shs_Process.h>
-#include <shs_LoadSwitch.h>
+#include <shs_Load.h>
 #include <shs_types.h>
+#include <shs_ProgramTimer.h>
+
+#include <shs_debug.h>
 
 #include "SmartGardenData.h"
 #include "SmartGardenSensor.h"
@@ -21,10 +26,9 @@ namespace shs
 class shs::SmartGarden : public shs::Process
 {
 public:
-    explicit SmartGarden(std::shared_ptr<shs::SensorAnalogMapped> soil_sensor,
-        std::shared_ptr<shs::SensorAnalogMapped> light_sensor,
-        std::shared_ptr<shs::DHT> dht,
-        std::shared_ptr<shs::TimedLoad> water_pump,
+    explicit SmartGarden(std::shared_ptr<shs::SmartGardenSensor> sensor,
+        std::shared_ptr<Button> button,
+        std::shared_ptr<shs::TimedLoad> water_pump, std::shared_ptr<shs::Load> light,
         std::shared_ptr<shs::SmartGardenIndication> indication = nullptr);
 
     ~SmartGarden() = default;
@@ -33,13 +37,8 @@ public:
     [[nodiscard]] uint16_t getWaterPumpDuration() const { return m_water_pump_duration_ms; }
     void waterPlants();
 
-    void setSoilSensor(std::shared_ptr<shs::SensorAnalogMapped> soil_sensor) { m_soil_sensor = std::move(soil_sensor); }
-    void setLightSensor(std::shared_ptr<shs::SensorAnalogMapped> light_sensor) { m_light_sensor = std::move(light_sensor); }
-    void setDHT(std::shared_ptr<shs::DHT> dht) { m_dht = std::move(dht); }
-    void setWaterPump(std::shared_ptr<shs::TimedLoad> water_pump) { m_water_pump = std::move(water_pump); }
-    void setIndication(std::shared_ptr<shs::SmartGardenIndication> indication) { m_indication = std::move(indication); }
-
-    const SmartGardenData& getData() const { return m_data; }
+    bool isDataUpdated() const { return m_data_updated; }
+    void getSensorsData(SmartGardenData& data) const { data = m_data; }
 
     void start() override;
     void tick() override;
@@ -48,8 +47,15 @@ public:
 protected:
     std::shared_ptr<shs::SmartGardenSensor> m_sensor;
     std::shared_ptr<shs::TimedLoad> m_water_pump;
-    std::shared_ptr<shs::LoadSwitch> m_light;
+    std::shared_ptr<shs::Load> m_light;
     std::shared_ptr<shs::SmartGardenIndication> m_indication;
+    std::shared_ptr<Button> m_button;
+
+    shs::SmartGardenData m_data;
+    shs::ProgramTimer m_data_update_timer;
+    bool m_data_updated = false;
 
     uint16_t m_water_pump_duration_ms;
+
+    void m_updateData();
 };
