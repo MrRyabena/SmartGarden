@@ -40,6 +40,8 @@ struct shs::SmartGardenConfig
     shs::t::shs_pin_t argb_pin = ARGB_PIN;
     uint8_t argb_count = ARGB_COUNT;
 
+    shs::t::shs_moduleID_t module_id = MODULE_ID;
+
 
     static constexpr shs::t::shs_pin_t SOIL_SENSOR_PIN = A0;
     static constexpr uint16_t SOIL_SENSOR_LOWER_BOUND = 300;
@@ -69,4 +71,6 @@ struct shs::SmartGardenConfig
 
     static constexpr shs::t::shs_pin_t ARGB_PIN = 0;
     static constexpr uint8_t ARGB_COUNT = 8;
+
+    static constexpr shs::t::shs_moduleID_t MODULE_ID = 40;
 };

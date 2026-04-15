@@ -38,11 +38,15 @@ public:
     [[nodiscard]] uint16_t getWaterPumpDuration() const { return m_water_pump_duration_ms; }
 
     void waterPlants();
+    void onLight() { if (m_light) m_light->on(); }
+    void offLight() { if (m_light) m_light->off(); }
     void switchLight();
     void showIndication();
 
     bool isDataUpdated() const { return m_data_updated; }
     void getSensorsData(SmartGardenData& data) const { data = m_data; }
+
+    std::shared_ptr<shs::SmartGardenIndication> getIndication() const { return m_indication; }
 
     void start() override;
     void tick() override;
