@@ -8,6 +8,8 @@
 #include <shs_lib_ARGB_LoadingEffect.h>
 #include <shs_lib_ARGB_SensorEffect.h>
 
+#include "SmartGardenData.h"
+
 
 namespace shs
 {

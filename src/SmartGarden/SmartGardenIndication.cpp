@@ -6,9 +6,9 @@
 
 shs::SmartGardenIndication::SmartGardenIndication()
     : m_effect_manager(m_leds, LEDS_COUNT, [this]() { FastLED.show(); }),
-    m_sensor_effect(m_leds, LEDS_COUNT, nullptr),
-    m_loading_effect(m_leds, LEDS_COUNT, nullptr),
-    m_breath_effect(m_leds, LEDS_COUNT, nullptr)
+    m_sensor_effect(m_leds, LEDS_COUNT, nullptr, shs::argb::SensorRingEffect::Config{}),
+    m_loading_effect(m_leds, LEDS_COUNT, nullptr, shs::argb::LoadingRingEffect::Config{}),
+    m_breath_effect(m_leds, LEDS_COUNT, nullptr, shs::argb::BreathBrightnessEffect::Config{})
 {
     FastLED.addLeds<WS2812, 5, GRB>(m_leds, LEDS_COUNT);
     m_applyDefaultLayerStack();
