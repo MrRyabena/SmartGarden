@@ -1,6 +1,7 @@
 #pragma once
 
 #include <shs_types.h>
+#include <shs_lib_DHT.h>
 
 namespace shs
 {
@@ -22,7 +23,9 @@ struct shs::SmartGardenConfig
     shs::t::shs_pin_t light_sensor_en_low_pin = LIGHT_SENSOR_EN_LOW_PIN;
 
     shs::t::shs_pin_t dht_pin = DHT_PIN;
-    uint8_t dht_type = DHT_TYPE;
+    shs::DHT::DHTtype dht_type = DHT_TYPE;
+
+    shs::t::shs_time_t sensor_enabling_time_ms = SENSOR_ENABLING_TIME_MS;
 
     shs::t::shs_pin_t water_pump_pin = WATER_PUMP_PIN;
     uint16_t water_pump_duration_ms = WATER_PUMP_DURATION_MS;
@@ -42,7 +45,9 @@ struct shs::SmartGardenConfig
     static constexpr shs::t::shs_pin_t LIGHT_SENSOR_EN_LOW_PIN = 2;   // D4
 
     static constexpr shs::t::shs_pin_t DHT_PIN = 14;
-    static constexpr uint8_t DHT_TYPE = 22;
+    static constexpr shs::DHT::DHTtype DHT_TYPE = shs::DHT::DHTtype::T_DHT22;
+
+    static constexpr shs::t::shs_time_t SENSOR_ENABLING_TIME_MS = 1000;
 
     static constexpr shs::t::shs_pin_t WATER_PUMP_PIN = 5;
     static constexpr uint16_t WATER_PUMP_DURATION_MS = 2000;
