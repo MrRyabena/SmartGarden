@@ -11,14 +11,15 @@
 #include <shs_ProgramTimer.h>
 
 #include <shs_debug.h>
-
 #include "SmartGardenData.h"
-#include "SmartGardenSensor.h"
-#include "TimedLoad.h"
 
 namespace shs
 {
+    class SmartGardenSensor;
+    class TimedLoad;
+    class SmartGardenData;
     class SmartGardenIndication;
+
     class SmartGarden;
 }
 
@@ -35,7 +36,10 @@ public:
 
     void setWaterPumpDuration(const uint16_t duration_ms) { m_water_pump_duration_ms = duration_ms; }
     [[nodiscard]] uint16_t getWaterPumpDuration() const { return m_water_pump_duration_ms; }
+
     void waterPlants();
+    void switchLight();
+    void showIndication();
 
     bool isDataUpdated() const { return m_data_updated; }
     void getSensorsData(SmartGardenData& data) const { data = m_data; }
@@ -53,9 +57,12 @@ protected:
 
     shs::SmartGardenData m_data;
     shs::ProgramTimer m_data_update_timer;
+    shs::ProgramTimer m_manual_light_switch_timer;
     bool m_data_updated = false;
 
     uint16_t m_water_pump_duration_ms;
 
     void m_updateData();
+    void m_autoLightControl();
+    void m_buttonHandler();
 };

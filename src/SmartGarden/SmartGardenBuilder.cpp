@@ -1,5 +1,6 @@
 #include "SmartGardenBuilder.h"
 
+#include <EncButton.h>
 
 #include <shs_LoadSwitch.h>
 
@@ -22,6 +23,7 @@ std::shared_ptr<shs::SmartGarden> shs::SmartGardenBuilder::build(const SmartGard
             config.light_sensor_en_low_pin,
             config.sensor_enabling_time_ms
         ),
+        std::make_shared<Button>(config.button_pin, config.button_mode, config.button_level),
         std::make_shared<shs::TimedLoad>(config.water_pump_pin),
         std::make_shared<shs::LoadSwitch>(config.light_pin),
         std::make_shared<shs::SmartGardenIndication>()

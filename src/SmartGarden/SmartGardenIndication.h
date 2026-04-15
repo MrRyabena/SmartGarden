@@ -7,6 +7,8 @@
 #include <shs_lib_ARGB_EffectManager.h>
 #include <shs_lib_ARGB_LoadingEffect.h>
 #include <shs_lib_ARGB_SensorEffect.h>
+#include <shs_ProgramTimer.h>
+#include <shs_types.h>
 
 #include "SmartGardenData.h"
 
@@ -15,7 +17,6 @@ namespace shs
 {
     class SmartGardenData;
     class SmartGardenIndication;
-
 }
 
 
@@ -38,14 +39,17 @@ public:
     void showHumidity();
     void showHumidity(float value);
 
-    void showLoading(const CRGB& color = CRGB::Blue);
-        
+    void showAll();
+
+    void showLoading(const CRGB& color = CRGB::Blue, shs::t::shs_time_t duration_ms = 0);
+
     void start() override;
     void tick() override;
     void stop() override;
 
 private:
     enum class Scene : uint8_t { NONE, SENSOR, LOADING };
+    enum class ShowAllStage : uint8_t { NONE, SOIL, TEMPERATURE, HUMIDITY };
 
     CRGB m_leds[LEDS_COUNT];
     SmartGardenData m_data{};
@@ -57,8 +61,13 @@ private:
 
     Scene m_scene = Scene::NONE;
     bool m_started = false;
+    bool m_show_all_active = false;
+    ShowAllStage m_show_all_stage = ShowAllStage::NONE;
+
+    shs::ProgramTimer m_loading_timer;
 
     void m_prepareSensorEffect(float value, const shs::argb::SensorRingEffect::Config& config);
+    void m_startShowAllStage(ShowAllStage stage);
     void m_enableSensorScene();
     void m_enableLoadingScene();
     void m_applyDefaultLayerStack();

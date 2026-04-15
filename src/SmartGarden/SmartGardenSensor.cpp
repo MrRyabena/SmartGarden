@@ -178,7 +178,7 @@ int32_t shs::SmartGardenSensor::getValueI(const uint8_t metric)
         case Metrics::SOIL_MOISTURE_RAW:
             return m_soil_sensor ? m_soil_sensor->getValueI(shs::etoi(sam_metrics::RAW)) : 0;
         case Metrics::SOIL_MOISTURE_PERCENT:
-            return m_soil_sensor ? m_soil_sensor->getValueI(shs::etoi(sam_metrics::PERCENT)) : 0;
+            return m_soil_sensor ? 100 - m_soil_sensor->getValueI(shs::etoi(sam_metrics::PERCENT)) : 0;
         case Metrics::SOIL_MOISTURE_NORMALIZED_255:
             return m_soil_sensor ? m_soil_sensor->getValueI(shs::etoi(sam_metrics::NORMALIZED_255)) : 0;
         case Metrics::LIGHT_LEVEL_RAW:
@@ -206,7 +206,7 @@ shs::t::shs_fixed_t shs::SmartGardenSensor::getValueFx(const uint8_t metric)
             if (m_soil_sensor) return m_soil_sensor->getValueFx(shs::etoi(sam_metrics::RAW));
             return shs::t::shs_fixed_t(0);
         case Metrics::SOIL_MOISTURE_PERCENT:
-            if (m_soil_sensor) return m_soil_sensor->getValueFx(shs::etoi(sam_metrics::PERCENT));
+            if (m_soil_sensor) return shs::t::shs_fixed_t(100.0f - m_soil_sensor->getValueF(shs::etoi(sam_metrics::PERCENT)));
             return shs::t::shs_fixed_t(0);
         case Metrics::SOIL_MOISTURE_NORMALIZED_255:
             if (m_soil_sensor) return m_soil_sensor->getValueFx(shs::etoi(sam_metrics::NORMALIZED_255));
@@ -242,7 +242,7 @@ shs::t::shs_float_t shs::SmartGardenSensor::getValueF(const uint8_t metric)
         case Metrics::SOIL_MOISTURE_RAW:
             return m_soil_sensor ? m_soil_sensor->getValueF(shs::etoi(sam_metrics::RAW)) : 0;
         case Metrics::SOIL_MOISTURE_PERCENT:
-            return m_soil_sensor ? m_soil_sensor->getValueF(shs::etoi(sam_metrics::PERCENT)) : 0;
+            return m_soil_sensor ? 100 - m_soil_sensor->getValueF(shs::etoi(sam_metrics::PERCENT)) : 0;
         case Metrics::SOIL_MOISTURE_NORMALIZED_255:
             return m_soil_sensor ? m_soil_sensor->getValueF(shs::etoi(sam_metrics::NORMALIZED_255)) : 0;
         case Metrics::LIGHT_LEVEL_RAW:
@@ -270,7 +270,7 @@ shs::t::shs_double_t shs::SmartGardenSensor::getValueD(const uint8_t metric)
         case Metrics::SOIL_MOISTURE_RAW:
             return m_soil_sensor ? m_soil_sensor->getValueD(shs::etoi(sam_metrics::RAW)) : 0;
         case Metrics::SOIL_MOISTURE_PERCENT:
-            return m_soil_sensor ? m_soil_sensor->getValueD(shs::etoi(sam_metrics::PERCENT)) : 0;
+            return m_soil_sensor ? 100 - m_soil_sensor->getValueD(shs::etoi(sam_metrics::PERCENT)) : 0;
         case Metrics::SOIL_MOISTURE_NORMALIZED_255:
             return m_soil_sensor ? m_soil_sensor->getValueD(shs::etoi(sam_metrics::NORMALIZED_255)) : 0;
         case Metrics::LIGHT_LEVEL_RAW:
