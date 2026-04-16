@@ -10,6 +10,8 @@
 #include "SmartGarden.h"
 #include "SmartGardenData.h"
 
+#include <shs_debug.h>
+
 
 namespace shs
 {
@@ -38,24 +40,31 @@ public:
     {
         if (!m_smart_garden) return shs::DTPpacket();
 
+        it.set_position(shs::DTPpacket::get_dataBeg(it));
         const auto command = it.read();
+
+        doutln("Has packet!");
 
         switch (static_cast<Commands>(command))
         {
             case Commands::WATER_PLANTS: // Water plants
                 m_smart_garden->waterPlants();
+                doutln("Watering plants!");
                 break;
 
             case Commands::LIGHT_ON: // Switch light on
                 m_smart_garden->onLight();
+                doutln("Turning light on!");
                 break;
 
             case Commands::LIGHT_OFF: // Switch light off
                 m_smart_garden->offLight();
+                doutln("Turning light off!");
                 break;
 
             case Commands::GET_DATA: // Get data
                 {
+                    doutln("Getting data!");
                     shs::ByteCollector<> bc(sizeof(SmartGardenData));
                     SmartGardenData data;
                     m_smart_garden->getSensorsData(data);

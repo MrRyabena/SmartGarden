@@ -6,6 +6,8 @@
 
 #include <shs_ControlWiFi.h>
 #include <shs_DTP.h>
+#include <shs_TcpServer.h>
+#include <shs_settings_private.h>
 
 #include <FastLED.h>
 
@@ -16,6 +18,7 @@
 #include "../SmartGarden/SmartGardenApi.h"
 
 std::shared_ptr<shs::SmartGarden> smart_garden;
+std::shared_ptr<shs::TcpServer> tcp_server;
 CRGB leds[shs::SmartGardenConfig::ARGB_COUNT];
 bool connected = false;
 
@@ -34,12 +37,18 @@ void setup()
 
     dtp = std::make_shared<shs::DTP>(config.module_id);
     dtp->attachAPI(std::make_unique<shs::SmartGardenApi>(smart_garden, config.module_id));
+
+    tcp_server = std::make_shared<shs::TcpServer>(shs::settings::DEFAULT_TCP_PORT, *dtp);
+
+    dtp->start();
+    tcp_server->start();
 }
 
 void loop()
 {
     smart_garden->tick();
     dtp->tick();
+    tcp_server->tick();
 
     if (!connected && shs::ControlWiFi::WiFiConnected())
     {

@@ -17,8 +17,8 @@ shs::SmartGarden::SmartGarden(std::shared_ptr<shs::SmartGardenSensor> sensor,
     m_light(light),
     m_indication(indication),
     m_data_update_timer(5000),
-    m_manual_light_switch_timer(180 * 60 * 1000), // 3 hours
-    m_water_pump_duration_ms(4000)
+    m_manual_light_switch_timer(1), // 3 hours
+    m_water_pump_duration_ms(10000)
 {
 }
 
@@ -33,6 +33,7 @@ void shs::SmartGarden::waterPlants()
 
 void shs::SmartGarden::switchLight()
 {
+    m_manual_light_switch_timer.setTimeout(3 * 60 * 60 * 1000); // 3 hours
     m_manual_light_switch_timer.reset();
     if (m_light)
     {
@@ -69,7 +70,7 @@ void shs::SmartGarden::tick()
     if (m_indication) m_indication->tick();
 
     m_buttonHandler();
-
+    m_autoLightControl();
     m_updateData();
 }
 
@@ -118,14 +119,14 @@ void shs::SmartGarden::m_autoLightControl()
 
     // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 
-    // if (light_level < 30.0f && m_light->getValue() == 0)
-    // {
-    //     m_light->on();
-    // }
-    // else if (light_level > 70.0f && m_light->getValue() != 0)
-    // {
-    //     m_light->off();
-    // }
+    if (light_level < 35.0f && m_light->getValue() == 0)
+    {
+        m_light->on();
+    }
+    else if (light_level > 60.0f && m_light->getValue() != 0)
+    {
+        m_light->off();
+    }
 }
 
 void shs::SmartGarden::m_buttonHandler()
